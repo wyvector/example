@@ -1,0 +1,69 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.module.nine.old.androids.NineOldAndroidsActivity">
+    <!--<item-->
+        <!--android:id="@+id/action_settings"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/menu_standard"
+        android:title="Standard"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_tablet"
+        android:title="Tablet"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_cube_in"
+        android:title="Cube In"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_cube_out"
+        android:title="Cube Out"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_flip_vertical"
+        android:title="Flip Vertical"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_flip_horizontal"
+        android:title="Flip Horizontal"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_stack"
+        android:title="Stack"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_zoom_in"
+        android:title="Zoom In"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_zoom_out"
+        android:title="Zoom Out"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_rotate_up"
+        android:title="Rotate Up"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_rotate_down"
+        android:title="Rotate Down"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_accordian"
+        android:title="Accordian"
+        app:showAsAction="never" />
+</menu>
