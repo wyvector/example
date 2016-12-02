@@ -1,0 +1,1 @@
+this project shows how to use the xcl-charts.jar to draw chart
