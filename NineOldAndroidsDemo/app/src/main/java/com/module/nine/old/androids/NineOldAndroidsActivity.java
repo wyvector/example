@@ -1,18 +1,25 @@
 package com.module.nine.old.androids;
 
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.base.nine.old.androids.JazzyViewPager;
+import com.base.nine.old.androids.OutlineContainer;
 
 public class NineOldAndroidsActivity extends AppCompatActivity {
     private JazzyViewPager mJazzy;
@@ -32,7 +39,7 @@ public class NineOldAndroidsActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        setupJazziness(JazzyViewPager.TransitionEffect.Tablet);
+        setupJazziness(JazzyViewPager.TransitionEffect.Zoom);
     }
 
     @Override
@@ -74,9 +81,45 @@ public class NineOldAndroidsActivity extends AppCompatActivity {
 
     private void setupJazziness(JazzyViewPager.TransitionEffect effect) {
         mJazzy = (JazzyViewPager) findViewById(R.id.jazzy_pager);
+        mJazzy.post(new Runnable() {
+            @Override
+            public void run() {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mJazzy.getLayoutParams();
+                
+                Display display = getWindowManager().getDefaultDisplay();
+
+                Point size = new Point();
+
+                display.getSize(size);
+//                layoutParams.width = Util.dpToPx(getResources(),size.x*3/5);
+                layoutParams.width = size.x*3/5;
+                mJazzy.setLayoutParams(layoutParams);
+                
+            }
+        });
         mJazzy.setTransitionEffect(effect);
         mJazzy.setAdapter(new MainAdapter());
-        mJazzy.setPageMargin(30);
+        mJazzy.setOffscreenPageLimit(10);
+        mJazzy.setPageMargin(100);
+        mJazzy.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                Log.d("-->", "onPageScrolled:" + position);
+//                mJazzy.animateZoom(position, positionOffset, positionOffsetPixels);
+            }
+
+        });
     }
 
     private class MainAdapter extends PagerAdapter {

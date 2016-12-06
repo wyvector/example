@@ -51,6 +51,10 @@
         android:id="@+id/menu_zoom_out"
         android:title="Zoom Out"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_zoom"
+        android:title="Zoom Out"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_rotate_up"

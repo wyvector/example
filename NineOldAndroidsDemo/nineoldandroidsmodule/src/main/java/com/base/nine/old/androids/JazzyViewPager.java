@@ -1,4 +1,4 @@
-package com.module.nine.old.androids;
+package com.base.nine.old.androids;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -21,14 +21,15 @@ import java.util.LinkedHashMap;
 
 public class JazzyViewPager extends ViewPager {
 
-    public static final String TAG = "JazzyViewPager";
+    //    public static final String TAG = "JazzyViewPager";
+    public static final String TAG = "-->";
 
     private boolean mEnabled = true;
-    private boolean mFadeEnabled = false;
-    private boolean mOutlineEnabled = false;
+    private boolean mFadeEnabled = true;
+    private boolean mOutlineEnabled = true;
     public static int sOutlineColor = Color.WHITE;
     private TransitionEffect mEffect = TransitionEffect.Standard;
-
+    private boolean isCanScroll = true;
     private HashMap<Integer, Object> mObjs = new LinkedHashMap<Integer, Object>();
 
     private static final float SCALE_MAX = 0.5f;
@@ -36,7 +37,7 @@ public class JazzyViewPager extends ViewPager {
     private static final float ROT_MAX = 15.0f;
 
     public enum TransitionEffect {
-        Standard, Tablet, CubeIn, CubeOut, FlipVertical, FlipHorizontal, Stack, ZoomIn, ZoomOut, RotateUp, RotateDown, Accordion
+        Standard, Tablet, CubeIn, CubeOut, FlipVertical, FlipHorizontal, Stack, ZoomIn, ZoomOut, Zoom, RotateUp, RotateDown, Accordion
     }
 
     private static final boolean API_11;
@@ -58,7 +59,7 @@ public class JazzyViewPager extends ViewPager {
     @SuppressWarnings("incomplete-switch")
     public JazzyViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setClipChildren(false);
+//        setClipChildren(false);
         // now style everything!
         TypedArray ta = context.obtainStyledAttributes(attrs,
                 R.styleable.JazzyViewPager);
@@ -121,8 +122,8 @@ public class JazzyViewPager extends ViewPager {
             return child;
         OutlineContainer out = new OutlineContainer(getContext());
         out.setLayoutParams(generateDefaultLayoutParams());
-        child.setLayoutParams(new OutlineContainer.LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        child.setLayoutParams(new OutlineContainer.LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT));
         out.addView(child);
         return out;
     }
@@ -215,11 +216,82 @@ public class JazzyViewPager extends ViewPager {
     protected void animateScroll(int position, float positionOffset) {
         if (mState != State.IDLE) {
             mRot = (float) (1 - Math.cos(2 * Math.PI * positionOffset)) / 2 * 30.0f;
-            ViewHelper.setRotationY(this, mState == State.GOING_RIGHT ? mRot
-                    : -mRot);
+            ViewHelper.setRotationY(this, mState == State.GOING_RIGHT ? mRot : -mRot);
             ViewHelper.setPivotX(this, getMeasuredWidth() * 0.5f);
             ViewHelper.setPivotY(this, getMeasuredHeight() * 0.5f);
         }
+    }
+
+    public void animateZoom(View left, View right, float positionOffset) {
+        boolean in = false;
+        float zoomMax = 0.2f;
+        Log.d("-->", "currItem=" + getCurrentItem());
+
+        if (right != null) {
+            manageLayer(right, true);
+            mScale = in ? zoomMax + (1 - zoomMax) * (1 - positionOffset) : 1 + zoomMax
+                    - zoomMax * (1 - positionOffset);
+            ViewHelper.setScaleX(right, mScale);
+            ViewHelper.setScaleY(right, mScale);
+            Log.d("-->", "mScale=" + mScale + "    right != null=" + (right != null));
+        }
+        if (left != null) {
+            manageLayer(left, true);
+            mScale = in ? zoomMax + (1 - zoomMax) * positionOffset : 1 + zoomMax - zoomMax
+                    * positionOffset;
+            ViewHelper.setScaleX(left, mScale);
+            ViewHelper.setScaleY(left, mScale);
+            Log.d("-->", "left != null=" + (left != null) + "    mScale=" + mScale);
+        }
+
+
+    }
+
+    public void animateZoomInit(View left, View right, float positionOffset) {
+        boolean in = false;
+        float zoomMax = 0.2f;
+
+        if (right != null) {
+            manageLayer(right, true);
+            mScale = in ? zoomMax + (1 - zoomMax) * positionOffset : 1 + zoomMax - zoomMax
+                    * positionOffset;
+            ViewHelper.setScaleX(right, mScale);
+            ViewHelper.setScaleY(right, mScale);
+        }
+        if (left != null) {
+            manageLayer(left, true);
+            mScale = in ? zoomMax + (1 - zoomMax) * (1 - positionOffset) : 1 + zoomMax - zoomMax
+                    * (1 - positionOffset);
+            ViewHelper.setScaleX(left, mScale);
+            ViewHelper.setScaleY(left, mScale);
+        }
+
+    }
+
+    public void animateZoom(int position, float positionOffset, int positionOffsetPixels) {
+
+        if (mState == State.IDLE && positionOffset > 0) {
+            oldPage = getCurrentItem();
+            mState = position == oldPage ? State.GOING_RIGHT : State.GOING_LEFT;
+        }
+        boolean goingRight = position == oldPage;
+        if (mState == State.GOING_RIGHT && !goingRight)
+            mState = State.GOING_LEFT;
+        else if (mState == State.GOING_LEFT && goingRight)
+            mState = State.GOING_RIGHT;
+
+        float effectOffset = isSmall(positionOffset) ? 0 : positionOffset;
+
+        mLeft = findViewFromObject(position);
+        mRight = findViewFromObject(position + 1);
+        mEffect = TransitionEffect.Zoom;
+        if (mFadeEnabled)
+            animateFade(mLeft, mRight, effectOffset);
+        if (mOutlineEnabled)
+            animateOutline(mLeft, mRight);
+
+        animateZoomInit(mLeft, mRight, 1.2f);
+
     }
 
     protected void animateTablet(View left, View right, float positionOffset) {
@@ -571,6 +643,10 @@ public class JazzyViewPager extends ViewPager {
             case Accordion:
                 animateAccordion(mLeft, mRight, effectOffset);
                 break;
+            case Zoom:
+                animateZoom(mLeft, mRight, effectOffset);
+            default:
+                break;
         }
 
         super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -580,6 +656,22 @@ public class JazzyViewPager extends ViewPager {
             mState = State.IDLE;
         }
 
+    }
+
+    /**
+     * 设置能否滚动
+     *
+     * @param isCanScroll
+     */
+    public void setScanScroll(boolean isCanScroll) {
+        this.isCanScroll = isCanScroll;
+    }
+
+    @Override
+    public void scrollTo(int x, int y) {
+        if (isCanScroll) {
+            super.scrollTo(x, y);
+        }
     }
 
     private boolean isSmall(float positionOffset) {
@@ -599,8 +691,12 @@ public class JazzyViewPager extends ViewPager {
         View v;
         for (int i = 0; i < getChildCount(); i++) {
             v = getChildAt(i);
-            if (a.isViewFromObject(v, o))
-                return v;
+            try {
+                if (a.isViewFromObject(v, o))
+                    return v;
+            } catch (Exception e) {
+
+            }
         }
         return null;
     }

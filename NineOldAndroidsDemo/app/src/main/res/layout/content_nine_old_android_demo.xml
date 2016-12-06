@@ -12,13 +12,30 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.module.nine.old.androids.NineOldAndroidsActivity"
     tools:showIn="@layout/activity_nine_old_android_demo">
+    <RelativeLayout
+        android:id="@+id/layout_carList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:clipChildren="false"
+        android:gravity="center">
+
+        <com.base.nine.old.androids.JazzyViewPager
+            android:id="@+id/jazzy_pager"
+            android:layout_width="280dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="3dp"
+            android:clipChildren="false"
+            android:gravity="center" />
+    </RelativeLayout>
 
     <!--<TextView-->
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="wrap_content"-->
     <!--android:text="Hello World!" />-->
-    <com.module.nine.old.androids.JazzyViewPager
-        android:id="@+id/jazzy_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--<com.module.nine.old.androids.JazzyViewPager-->
+        <!--android:id="@+id/jazzy_pager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 </RelativeLayout>
