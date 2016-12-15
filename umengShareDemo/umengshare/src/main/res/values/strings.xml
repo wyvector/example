@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">UmengShare</string>
+    <string name="umeng_share_provite_success">收藏成功啦</string>
+    <string name="umeng_share_success">分享成功啦</string>
+    <string name="umeng_share_fail">分享失败啦</string>
+    <string name="umeng_share_cancel">分享取消了</string>
+    <string name="umeng_share_provite_fail">收藏失败了</string>
+    <string name="umeng_share_provite_cancel">收藏取消了</string>
+    
+</resources>
