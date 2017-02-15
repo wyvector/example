@@ -47,7 +47,7 @@ public class GridFragment extends Fragment {
             footerView = LayoutInflater.from(getActivity()).inflate(R.layout.footer_view, null);
 
             // 使用重写后的格子布局管理器
-            mRecyclerView.setLayoutManager(new AnimRFGridLayoutManager(getActivity(), 2));
+            mRecyclerView.setLayoutManager(new AnimRFGridLayoutManager(getActivity(),3 ));
             // 设置分割线
             mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity(), true));
             // 添加头部和脚部，如果不添加就使用默认的头部和脚部
@@ -56,7 +56,7 @@ public class GridFragment extends Fragment {
             mRecyclerView.setScaleRatio(1.7f);
            // 设置下拉时拉伸的图片，不设置就使用默认的
             mRecyclerView.setHeaderImage((ImageView) headerView.findViewById(R.id.iv_hander));
-            mRecyclerView.addFootView(footerView);
+//            mRecyclerView.addFootView(footerView);
             // 设置刷新动画的颜色
             mRecyclerView.setColor(Color.BLUE, Color.GREEN);
             // 设置头部恢复动画的执行时间，默认500毫秒
@@ -132,7 +132,7 @@ public class GridFragment extends Fragment {
         if (datas == null) {
             datas = new ArrayList<>();
         }
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 4; i++) {
             datas.add("条目  " + (datas.size() + 1));
         }
     }

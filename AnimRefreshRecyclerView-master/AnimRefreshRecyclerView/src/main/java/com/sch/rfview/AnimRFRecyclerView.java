@@ -250,7 +250,10 @@ public class AnimRFRecyclerView extends RecyclerView implements Runnable {
         if (mFootViews.isEmpty()) {
             // 新建脚部
             LinearLayout footerLayout = new LinearLayout(mContext);
+            footerLayout.setPadding(0,30,0,30);
+//            LayoutInflater.from(mContext).inflate(R.layout.footer_view, null);
             footerLayout.setGravity(Gravity.CENTER);
+            footerLayout.setOrientation(LinearLayout.HORIZONTAL);
             footerLayout.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mFootViews.add(footerLayout);
@@ -258,7 +261,8 @@ public class AnimRFRecyclerView extends RecyclerView implements Runnable {
             footerLayout.addView(new ProgressBar(mContext, null, android.R.attr.progressBarStyleSmall));
 
             TextView text = new TextView(mContext);
-            text.setText("正在加载...");
+            text.setText("正在加载ing...");
+            text.setPadding(30,0,0,0);
             footerLayout.addView(text);
         }
         // 使用包装了头部和脚部的适配器
